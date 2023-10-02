@@ -152,16 +152,24 @@ Status change_expression(const char* expression, char* result){
     Stack stack;
     init_stack(&stack);
     //printf("%s\n", expression);
-    for (i = 0; expression[i] != '\0'; i++){
+    for (; expression[i] != '\0' || expression[i] == ' ' ; i++){
         char c = expression[i];
         if((c >= '0' && c<= '9')){
-            for(;expression[i] >= '0' && expression[i] <= '9'; i++ ){
-                result[j++] = expression[i];
+            int number = i;
+            for(;expression[number] >= '0' && expression[number] <= '9'; number++ ){
+                result[j++] = expression[number];
             }
             result[j++] = ' ';
-            i--;
+            i = number - 1;
         } else if(c == '('){
             stack_push(&stack, &c);
+            if(expression[i + 1] == '-'){
+                result[j++] = '0';
+                result[j++] = ' ';
+            } else if(expression[i + 1] == ')'){
+                printf("未知的表达式\n");
+                exit(-1);
+            }
         } else if (c == ')') {
             while (*(stack.pTop-1) != '(') {
                 char element;
@@ -172,10 +180,15 @@ Status change_expression(const char* expression, char* result){
                 char k;
                 stack_pop(&stack,&k);
         } else if (c == '+' || c == '-' || c == '*' || c == '/') {
-            while (!is_empty(&stack) &&  precedence(c) <= precedence(*stack.pTop)) {
+            if (c == '-' && i == 0  ){
+                result[j++] = '0';
+                result[j++] = ' ';
+            }
+            while (!is_empty(&stack) &&  precedence(c) <= precedence(*(stack.pTop - 1))) {
                 char element;
                 stack_pop(&stack, &element);
                 result[j++] = element;
+                result[j++] = ' ';
             }
             stack_push(&stack, &c);
         } else if (c == ' '){
@@ -184,8 +197,11 @@ Status change_expression(const char* expression, char* result){
         } else if (expression[i] == '.'){
             result[--j] = '.';
             result[j++] = '.';
+        } else if(expression[i] == '\n'){
+            break;
+
         } else {
-            printf("表达式错误\n");
+            printf("未知的表达式\n");
             exit(-1);
         }
         
@@ -243,9 +259,9 @@ double calculate(char *result) {
                     answer = a * b;
                     break;
                 case '/':
-                    if(b == 0.0){
+                    if(b == 0){
                         printf("错误\n");
-                        return 0;
+                        exit(-1);
                     }
                     answer = a / b;
                     break;
