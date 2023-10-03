@@ -12,6 +12,7 @@
 #define RED "\033[0;32;31m"
 #define NONE "\033[m"
 #define YELLOW "\033[1;33m"
+//#define DEBUG_MODE 0
 
 int main(int argc, char *argv[]) {
     int opt;
@@ -51,6 +52,12 @@ int main(int argc, char *argv[]) {
             if (input[0] != '\0') {
                 int i = change_expression(input, result);
                 if (i == OK) {
+
+                    #ifdef DEBUG_MODE
+                        printf("后缀表达式为:%s\n", result);
+                        
+                    #endif
+                    
                     answer = calculate(result);
                     add_history(input);
                     free(input);
