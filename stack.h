@@ -55,5 +55,6 @@ double calculate(char *result);
 int mypow(int base, int exponent);
 int binary_change(char* expression, char* result);
 int binary_transform(double answer);
+int hex_change(char* expression, char* result);
 
 #endif

@@ -83,7 +83,29 @@ int main(int argc, char *argv[]) {
                 }
             }
         } else if (mode == hex){
+            if (input[0] != '\0') {
+                int i = hex_change(input, result);
+                if (i == OK) {
 
+                    #ifdef DEBUG_MODE
+                        printf("后缀表达式为:%s\n", result);
+                        
+                    #endif
+                    
+                    answer = calculate(result);
+                    unsigned int finalanswer = (unsigned int)answer;
+                    free(input);
+                    printf(RED"结果为：%X\n"NONE, finalanswer);
+
+                    if (option_t == 1) {
+                        fprintf(output, "结果为：%X\n", finalanswer);
+                        fflush(output);
+                    }
+                } else if (i == ERROR) {
+                    exit(1);
+                }
+                    
+            }
         } else if (mode == binary){
             int finalanswer;
             if (input[0] != '\0') {
@@ -114,7 +136,7 @@ int main(int argc, char *argv[]) {
     if (option_t == 1) {
         fclose(output);
     }
-    }
+}
     return 0;
     
 } 
