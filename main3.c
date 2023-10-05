@@ -37,8 +37,11 @@ int main(int argc, char *argv[]) {
         }
     }
 
+    MODE mode = decimal;
+
     while (1) {
         char *input = readline("请输入表达式> ");
+        add_history(input);
         char result[100];
         double answer;
 
@@ -48,7 +51,16 @@ int main(int argc, char *argv[]) {
             printf(YELLOW"*代表将两数相乘\n"NONE);
             printf(YELLOW"/代表将两数相除\n"NONE);
             printf("括号代表优先计算括号里面的内容\n");
-        } else {
+        } else if(strcmp(input, "D") == 0) {
+            printf("计算器切换到十进制\n");
+            mode = decimal;
+        } else if(strcmp(input, "B") == 0) {
+            printf("计算器切换到二进制\n");
+            mode = binary;
+        } else if(strcmp(input, "H") == 0) {
+            printf("计算器切换到十六进制\n");
+            mode = hex;
+        } else if (mode == decimal){
             if (input[0] != '\0') {
                 int i = change_expression(input, result);
                 if (i == OK) {
@@ -59,7 +71,6 @@ int main(int argc, char *argv[]) {
                     #endif
                     
                     answer = calculate(result);
-                    add_history(input);
                     free(input);
                     printf(RED"结果为：%g\n"NONE, answer);
 
@@ -71,12 +82,39 @@ int main(int argc, char *argv[]) {
                     exit(1);
                 }
             }
+        } else if (mode == hex){
+
+        } else if (mode == binary){
+            int finalanswer;
+            if (input[0] != '\0') {
+                int i = binary_change(input, result);
+                if (i == OK) {
+
+                    #ifdef DEBUG_MODE
+                        printf("后缀表达式为:%s\n", result);
+                        
+                    #endif
+                    
+                    answer = calculate(result);
+                    finalanswer = binary_transform(answer);
+                    free(input);
+                    printf(RED"结果为：%d\n"NONE, finalanswer);
+
+                    if (option_t == 1) {
+                        fprintf(output, "结果为：%d\n", finalanswer);
+                        fflush(output);
+                    }
+                } else if (i == ERROR) {
+                    exit(1);
+                }
+                    
+            }
         }
-    }
 
     if (option_t == 1) {
         fclose(output);
     }
-
+    }
     return 0;
-}
+    
+} 

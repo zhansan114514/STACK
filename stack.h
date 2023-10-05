@@ -13,6 +13,12 @@ typedef enum {
     TRUE
 } Bool;
 
+typedef enum {
+    binary,
+    hex,
+    decimal
+} MODE;
+
 typedef struct {
     StackElem* pBase;
     StackElem* pTop;
@@ -46,5 +52,8 @@ Status traverse(Stack2 *pStack,Status (*visit)(StackElem2*));
 Status change_expression(const char* expression, char* result);
 int precedence(char op);
 double calculate(char *result);
+int mypow(int base, int exponent);
+int binary_change(char* expression, char* result);
+int binary_transform(double answer);
 
 #endif
