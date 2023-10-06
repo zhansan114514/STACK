@@ -62,12 +62,12 @@ int binary_change(char* expression, char* result){
                 }
                 char k;
                 stack_pop(&stack,&k);
-        } else if (c == '+' || c == '-' || c == '*' || c == '/') {
+        } else if (c == '+' || c == '-' || c == '*' || c == '/' || c == '|' || c == '&' || c == '^') {
             if (c == '-' && i == 0  ){
                 result[j++] = '0';
                 result[j++] = ' ';
             }
-            while (!is_empty(&stack) &&  precedence(c) <= precedence(*(stack.pTop - 1))) {
+            while (!is_empty(&stack) &&  binary_precedence(c) <= binary_precedence(*(stack.pTop - 1))) {
                 char element;
                 stack_pop(&stack, &element);
                 result[j++] = element;
@@ -125,7 +125,84 @@ int binary_transform(double answer){
     return sum;
 }
 
+//计算运算符的权重
+int binary_precedence(char c) {
+    if (c == '+' || c == '-')
+        return 4;
+    if (c == '*' || c == '/')
+        return 5;
+    if (c == '&')
+        return 3;
+    if (c == '^')
+        return 2;
+    if (c == '|')
+        return 1;
+    return 0;
+}
 
+
+//计算后缀表达式
+double binary_calculate(char *result) {
+    int i = 0;
+    Stack2 stack;
+    myinit(&stack);
+    double C;
+    char* c = strtok(result ," ");
+    for(; c != NULL ; c = strtok(NULL, " ")){
+        if(c[0] >= '0' && c[0] <= '9'){
+             double C = atof(c);
+            push(&stack , &C);
+            //printf("%s\n", c);
+        } else if(*c == '+' || *c == '-' || *c == '*' || *c == '/' || *c == '&' || *c == '|' || *c == '^'){
+            double b;
+            pop(&stack, &b);
+            unsigned int B = (unsigned int)b;
+            double a;
+            pop(&stack, &a);
+            unsigned int A = (unsigned int)a;
+            double answer;
+            unsigned int ANSWER;
+            switch (*c) {
+                case '+':
+                    ANSWER = A + B;
+                    break;
+                case '-':
+                    ANSWER = A - B;
+                    break;
+                case '*':
+                    ANSWER = A * B;
+                    break;
+                case '/':
+                    if(B == 0){
+                        printf("错误\n");
+                        exit(-1);
+                    }
+                    ANSWER = A / B;
+                    break;
+                case '&':
+                    ANSWER = A & B;
+                    break;
+                case '^':
+                    ANSWER = A ^ B;
+                    break;
+                case '|':
+                    ANSWER = A | B;
+                    break;
+                default:
+                printf("错误\n");
+                return 0;
+            }
+            answer = (double)ANSWER;
+            push(&stack, &answer);
+        } 
+        
+    }
+
+    StackElem2 finalResult;
+    pop(&stack, &finalResult);
+    clear(&stack);
+    return finalResult;
+}
 
 
 

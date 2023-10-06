@@ -117,7 +117,7 @@ int main(int argc, char *argv[]) {
                         
                     #endif
                     
-                    answer = calculate(result);
+                    answer = binary_calculate(result);
                     finalanswer = binary_transform(answer);
                     free(input);
                     printf(RED"结果为：%d\n"NONE, finalanswer);

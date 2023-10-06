@@ -56,5 +56,7 @@ int mypow(int base, int exponent);
 int binary_change(char* expression, char* result);
 int binary_transform(double answer);
 int hex_change(char* expression, char* result);
+int binary_precedence(char c);
+double binary_calculate(char *result);
 
 #endif
