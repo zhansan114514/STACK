@@ -200,6 +200,29 @@ Status decimal_change(const char* expression, char* result){
         } else if(expression[i] == '\n'){
             break;
 
+        } else if(c == '!' || c == '=' || c == '>' || c == '&' || c == '<' || c == '|'){
+            while (!is_empty(&stack) &&  decimal_precedence(c) <= decimal_precedence(*(stack.pTop - 1))) {
+                char element;
+                stack_pop(&stack, &element);
+                result[j++] = element;
+                result[j++] = ' ';
+            }
+            if(c == '>' && expression[i+1] == '='){
+                c = '}';
+                ++i;
+            } else if(c == '<' && expression[i+1] == '='){
+                c = '{';
+                ++i;
+            } else if(c == '!'){
+                ++i;
+            } else if(c == '='){
+                ++i;
+            } else if(c == '&'){
+                ++i;
+            } else if(c == '|'){
+                ++i;
+            }
+            stack_push(&stack, &c);
         } else {
             printf("未知的表达式\n");
             exit(-1);
@@ -222,9 +245,17 @@ Status decimal_change(const char* expression, char* result){
 //计算运算符的权重
 int decimal_precedence(char c) {
     if (c == '+' || c == '-')
-        return 1;
+        return 5;
     if (c == '*' || c == '/')
+        return 6;
+    if (c == '>' || c == '<')
+        return 4;
+    if (c == '!' || c == '=')
+        return 3;
+    if (c == '&' )
         return 2;
+    if (c == '|')
+        return 1;
     return 0;
 }
 
@@ -242,7 +273,7 @@ double decimal_calculate(char *result) {
              double C = atof(c);
             push(&stack , &C);
             //printf("%s\n", c);
-        } else if(*c == '+' || *c == '-' || *c == '*' || *c == '/'){
+        } else if(*c == '+' || *c == '-' || *c == '*' || *c == '/' || *c == '>' || *c == '<' || *c == '|' || *c == '&' || *c == '}' || *c == '{'){
             double b;
             pop(&stack, &b);
             double a;
@@ -257,6 +288,24 @@ double decimal_calculate(char *result) {
                     break;
                 case '*':
                     answer = a * b;
+                    break;
+                case '<':
+                    answer = a < b;
+                    break;
+                case '>':
+                    answer = a > b;
+                    break;
+                case '{':
+                    answer = a <= b;
+                    break;
+                case '}':
+                    answer = a >= b;
+                    break;
+                case '&':
+                    answer = a && b;
+                    break;
+                case '|':
+                    answer = a || b;
                     break;
                 case '/':
                     if(b == 0){
