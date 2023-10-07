@@ -51,6 +51,8 @@ int binary_change(char* expression, char* result){
                 result[j++] = ' ';
             } else if(expression[i + 1] == ')'){
                 printf("未知的表达式\n");
+                stack_clear(&stack);
+                stack_free(&stack);
                 return ERROR;
             }
         } else if (c == ')') {
@@ -82,6 +84,8 @@ int binary_change(char* expression, char* result){
 
         } else {
             printf("未知的表达式\n");
+            stack_clear(&stack);
+            stack_free(&stack);
             return ERROR;
         }
         
@@ -142,7 +146,7 @@ int binary_precedence(char c) {
 
 
 //计算后缀表达式
-double binary_calculate(char *result) {
+Status binary_calculate(char *result, double* finalResult) {
     int i = 0;
     Stack2 stack;
     myinit(&stack);
@@ -175,6 +179,8 @@ double binary_calculate(char *result) {
                 case '/':
                     if(B == 0){
                         printf("错误\n");
+                        clear(&stack);
+                        myfree(&stack);
                         return ERROR;
                     }
                     ANSWER = A / B;
@@ -190,7 +196,9 @@ double binary_calculate(char *result) {
                     break;
                 default:
                 printf("错误\n");
-                return 0;
+                clear(&stack);
+                myfree(&stack);
+                return OK;
             }
             answer = (double)ANSWER;
             push(&stack, &answer);
@@ -198,10 +206,10 @@ double binary_calculate(char *result) {
         
     }
 
-    StackElem2 finalResult;
-    pop(&stack, &finalResult);
+    pop(&stack, finalResult);
     clear(&stack);
-    return finalResult;
+    myfree(&stack);
+    return OK;
 }
 
 

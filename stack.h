@@ -51,14 +51,14 @@ Status pop(Stack2* pStack,StackElem2* pElem);
 Status traverse(Stack2 *pStack,Status (*visit)(StackElem2*));
 Status decimal_change(const char* expression, char* result);
 int decimal_precedence(char op);
-double decimal_calculate(char *result);
+Status decimal_calculate(char *result, double* finalResult);
 int mypow(int base, int exponent);
 int binary_change(char* expression, char* result);
 int binary_transform(double answer);
 int hex_change(char* expression, char* result);
 int binary_precedence(char c);
-double binary_calculate(char *result);
+Status binary_calculate(char *result, double* finalResult);
 int hex_precedence(char op);
-double hex_calculate(char *result);
+Status hex_calculate(char *result, double* finalResult);
 
 #endif

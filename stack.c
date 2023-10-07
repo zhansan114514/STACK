@@ -168,6 +168,8 @@ Status decimal_change(const char* expression, char* result){
                 result[j++] = ' ';
             } else if(expression[i + 1] == ')'){
                 printf("未知的表达式\n");
+                stack_clear(&stack);
+                stack_free(&stack);
                 return ERROR;
             }
         } else if (c == ')') {
@@ -225,6 +227,8 @@ Status decimal_change(const char* expression, char* result){
             stack_push(&stack, &c);
         } else {
             printf("未知的表达式\n");
+            stack_clear(&stack);
+            stack_free(&stack);
             return ERROR;
         }
         
@@ -262,7 +266,7 @@ int decimal_precedence(char c) {
 
 
 //计算后缀表达式
-double decimal_calculate(char *result) {
+Status decimal_calculate(char *result, double* finalResult) {
     int i = 0;
     Stack2 stack;
     myinit(&stack);
@@ -310,21 +314,25 @@ double decimal_calculate(char *result) {
                 case '/':
                     if(b == 0){
                         printf("错误\n");
+                        clear(&stack);
+                        myfree(&stack);
                         return ERROR;
                     }
                     answer = a / b;
                     break;
                 default:
                 printf("错误\n");
-                return 0;
+                clear(&stack);
+                myfree(&stack);
+                return ERROR;
             }
             push(&stack, &answer);
         } 
         
     }
 
-    StackElem2 finalResult;
-    pop(&stack, &finalResult);
+    pop(&stack, finalResult);
     clear(&stack);
-    return finalResult;
+    myfree(&stack);
+    return OK;
 }

@@ -44,6 +44,7 @@ int main(int argc, char *argv[]) {
         add_history(input);
         char result[100];
         double answer;
+        Status h;
 
         if (strcmp(input, "help") == 0) {
             printf(YELLOW"+代表将两数相加\n"NONE);
@@ -70,9 +71,9 @@ int main(int argc, char *argv[]) {
                         
                     #endif
                     
-                    answer = decimal_calculate(result);
+                    h = decimal_calculate(result, &answer);
                     free(input);
-                    if(answer != ERROR){
+                    if(h != ERROR){
                     printf(RED"结果为：%g\n"NONE, answer);
                     }
 
@@ -92,10 +93,10 @@ int main(int argc, char *argv[]) {
                         
                     #endif
                     
-                    answer = hex_calculate(result);
+                    h = hex_calculate(result, &answer);
                     unsigned int finalanswer = (unsigned int)answer;
                     free(input);
-                    if(answer != ERROR){
+                    if(h != ERROR){
                     printf(RED"结果为：%X\n"NONE, finalanswer);
                     }
 
@@ -117,10 +118,10 @@ int main(int argc, char *argv[]) {
                         
                     #endif
                     
-                    answer = binary_calculate(result);
+                    h = binary_calculate(result, &answer);
                     finalanswer = binary_transform(answer);
                     free(input);
-                    if(answer != ERROR){
+                    if(h != ERROR){
                     printf(RED"结果为：%d\n"NONE, finalanswer);
                     }
 
