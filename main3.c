@@ -132,11 +132,11 @@ int main(int argc, char *argv[]) {
                 }     
             }
         }
-
+    }
     if (option_t == 1) {
         fclose(output);
     }
-}
+
     return 0;
     
 } 
