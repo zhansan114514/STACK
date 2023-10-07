@@ -72,14 +72,14 @@ int main(int argc, char *argv[]) {
                     
                     answer = decimal_calculate(result);
                     free(input);
+                    if(answer != ERROR){
                     printf(RED"结果为：%g\n"NONE, answer);
+                    }
 
                     if (option_t == 1) {
                         fprintf(output, "结果为：%g\n", answer);
                         fflush(output);
                     }
-                } else if (i == ERROR) {
-                    exit(1);
                 }
             }
         } else if (mode == hex){
@@ -95,14 +95,14 @@ int main(int argc, char *argv[]) {
                     answer = hex_calculate(result);
                     unsigned int finalanswer = (unsigned int)answer;
                     free(input);
+                    if(answer != ERROR){
                     printf(RED"结果为：%X\n"NONE, finalanswer);
+                    }
 
                     if (option_t == 1) {
                         fprintf(output, "结果为：%X\n", finalanswer);
                         fflush(output);
                     }
-                } else if (i == ERROR) {
-                    exit(1);
                 }
                     
             }
@@ -120,16 +120,15 @@ int main(int argc, char *argv[]) {
                     answer = binary_calculate(result);
                     finalanswer = binary_transform(answer);
                     free(input);
+                    if(answer != ERROR){
                     printf(RED"结果为：%d\n"NONE, finalanswer);
+                    }
 
                     if (option_t == 1) {
                         fprintf(output, "结果为：%d\n", finalanswer);
                         fflush(output);
                     }
-                } else if (i == ERROR) {
-                    exit(1);
-                }
-                    
+                }     
             }
         }
 

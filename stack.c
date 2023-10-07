@@ -168,7 +168,7 @@ Status decimal_change(const char* expression, char* result){
                 result[j++] = ' ';
             } else if(expression[i + 1] == ')'){
                 printf("未知的表达式\n");
-                exit(-1);
+                return ERROR;
             }
         } else if (c == ')') {
             while (*(stack.pTop-1) != '(') {
@@ -225,7 +225,7 @@ Status decimal_change(const char* expression, char* result){
             stack_push(&stack, &c);
         } else {
             printf("未知的表达式\n");
-            exit(-1);
+            return ERROR;
         }
         
     }
@@ -310,7 +310,7 @@ double decimal_calculate(char *result) {
                 case '/':
                     if(b == 0){
                         printf("错误\n");
-                        exit(-1);
+                        return ERROR;
                     }
                     answer = a / b;
                     break;

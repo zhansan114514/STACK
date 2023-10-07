@@ -55,7 +55,7 @@ int hex_change(char* expression, char* result){
                 result[j++] = ' ';
             } else if(expression[i + 1] == ')'){
                 printf("未知的表达式\n");
-                exit(-1);
+                return ERROR;
             }
         } else if (c == ')') {
             while (*(stack.pTop-1) != '(') {
@@ -86,7 +86,7 @@ int hex_change(char* expression, char* result){
 
         } else {
             printf("未知的表达式\n");
-            exit(-1);
+            return ERROR;
         }
         
     }
@@ -144,7 +144,7 @@ double hex_calculate(char *result) {
                 case '/':
                     if(b == 0){
                         printf("错误\n");
-                        exit(-1);
+                        return ERROR;
                     }
                     answer = a / b;
                     break;

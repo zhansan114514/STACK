@@ -51,7 +51,7 @@ int binary_change(char* expression, char* result){
                 result[j++] = ' ';
             } else if(expression[i + 1] == ')'){
                 printf("未知的表达式\n");
-                exit(-1);
+                return ERROR;
             }
         } else if (c == ')') {
             while (*(stack.pTop-1) != '(') {
@@ -82,7 +82,7 @@ int binary_change(char* expression, char* result){
 
         } else {
             printf("未知的表达式\n");
-            exit(-1);
+            return ERROR;
         }
         
     }
@@ -175,7 +175,7 @@ double binary_calculate(char *result) {
                 case '/':
                     if(B == 0){
                         printf("错误\n");
-                        exit(-1);
+                        return ERROR;
                     }
                     ANSWER = A / B;
                     break;
