@@ -49,14 +49,16 @@ Status get_top(Stack2* pStack,StackElem2* pElem);
 Status push(Stack2 *pStack,StackElem2* pElem);
 Status pop(Stack2* pStack,StackElem2* pElem);
 Status traverse(Stack2 *pStack,Status (*visit)(StackElem2*));
-Status change_expression(const char* expression, char* result);
-int precedence(char op);
-double calculate(char *result);
+Status decimal_change(const char* expression, char* result);
+int decimal_precedence(char op);
+double decimal_calculate(char *result);
 int mypow(int base, int exponent);
 int binary_change(char* expression, char* result);
 int binary_transform(double answer);
 int hex_change(char* expression, char* result);
 int binary_precedence(char c);
 double binary_calculate(char *result);
+int hex_precedence(char op);
+double hex_calculate(char *result);
 
 #endif

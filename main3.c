@@ -62,7 +62,7 @@ int main(int argc, char *argv[]) {
             mode = hex;
         } else if (mode == decimal){
             if (input[0] != '\0') {
-                int i = change_expression(input, result);
+                int i = decimal_change(input, result);
                 if (i == OK) {
 
                     #ifdef DEBUG_MODE
@@ -70,7 +70,7 @@ int main(int argc, char *argv[]) {
                         
                     #endif
                     
-                    answer = calculate(result);
+                    answer = decimal_calculate(result);
                     free(input);
                     printf(RED"结果为：%g\n"NONE, answer);
 
@@ -92,7 +92,7 @@ int main(int argc, char *argv[]) {
                         
                     #endif
                     
-                    answer = calculate(result);
+                    answer = hex_calculate(result);
                     unsigned int finalanswer = (unsigned int)answer;
                     free(input);
                     printf(RED"结果为：%X\n"NONE, finalanswer);

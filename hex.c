@@ -71,7 +71,7 @@ int hex_change(char* expression, char* result){
                 result[j++] = '0';
                 result[j++] = ' ';
             }
-            while (!is_empty(&stack) &&  precedence(c) <= precedence(*(stack.pTop - 1))) {
+            while (!is_empty(&stack) &&  hex_precedence(c) <= hex_precedence(*(stack.pTop - 1))) {
                 char element;
                 stack_pop(&stack, &element);
                 result[j++] = element;
@@ -102,5 +102,64 @@ int hex_change(char* expression, char* result){
 }
 
 
+//计算运算符的权重
+int hex_precedence(char c) {
+    if (c == '+' || c == '-')
+        return 1;
+    if (c == '*' || c == '/')
+        return 2;
+    return 0;
+}
 
+
+
+//计算后缀表达式
+double hex_calculate(char *result) {
+    int i = 0;
+    Stack2 stack;
+    myinit(&stack);
+    double C;
+    char* c = strtok(result ," ");
+    for(; c != NULL ; c = strtok(NULL, " ")){
+        if(c[0] >= '0' && c[0] <= '9'){
+             double C = atof(c);
+            push(&stack , &C);
+            //printf("%s\n", c);
+        } else if(*c == '+' || *c == '-' || *c == '*' || *c == '/'){
+            double b;
+            pop(&stack, &b);
+            double a;
+            pop(&stack, &a);
+            double answer;
+            switch (*c) {
+                case '+':
+                    answer = a + b;
+                    break;
+                case '-':
+                    answer = a - b;
+                    break;
+                case '*':
+                    answer = a * b;
+                    break;
+                case '/':
+                    if(b == 0){
+                        printf("错误\n");
+                        exit(-1);
+                    }
+                    answer = a / b;
+                    break;
+                default:
+                printf("错误\n");
+                return 0;
+            }
+            push(&stack, &answer);
+        } 
+        
+    }
+
+    StackElem2 finalResult;
+    pop(&stack, &finalResult);
+    clear(&stack);
+    return finalResult;
+}
 

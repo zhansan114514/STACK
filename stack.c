@@ -145,7 +145,7 @@ Status stack_traverse(Stack *pStack,Status (*visit)(StackElem*)){
 
 
 //中缀表达式变后缀表达式
-Status change_expression(const char* expression, char* result){
+Status decimal_change(const char* expression, char* result){
     int i = 0;
     int j = 0;
     char c;
@@ -184,7 +184,7 @@ Status change_expression(const char* expression, char* result){
                 result[j++] = '0';
                 result[j++] = ' ';
             }
-            while (!is_empty(&stack) &&  precedence(c) <= precedence(*(stack.pTop - 1))) {
+            while (!is_empty(&stack) &&  decimal_precedence(c) <= decimal_precedence(*(stack.pTop - 1))) {
                 char element;
                 stack_pop(&stack, &element);
                 result[j++] = element;
@@ -220,7 +220,7 @@ Status change_expression(const char* expression, char* result){
 
 
 //计算运算符的权重
-int precedence(char c) {
+int decimal_precedence(char c) {
     if (c == '+' || c == '-')
         return 1;
     if (c == '*' || c == '/')
@@ -231,7 +231,7 @@ int precedence(char c) {
 
 
 //计算后缀表达式
-double calculate(char *result) {
+double decimal_calculate(char *result) {
     int i = 0;
     Stack2 stack;
     myinit(&stack);
