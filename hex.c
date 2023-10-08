@@ -6,7 +6,6 @@
 #include "stack.h"
 #include <assert.h>
 #include <unistd.h>
-#include <math.h>
 //#include "stack.c"
 //#include "stack2.c"
 

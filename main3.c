@@ -77,10 +77,16 @@ int main(int argc, char *argv[]) {
                     printf(RED"结果为：%g\n"NONE, answer);
                     }
 
-                    if (option_t == 1) {
+                    if (option_t == 1 && h != ERROR) {
                         fprintf(output, "结果为：%g\n", answer);
                         fflush(output);
+                    } else if(option_t == 1 && h == ERROR) {
+                        fprintf(output, "错误的表达式\n");
+                        fflush(output);
                     }
+                } else if(i != OK){
+                    fprintf(output, "错误的表达式\n");
+                    fflush(output);
                 }
             }
         } else if (mode == hex){
@@ -100,10 +106,16 @@ int main(int argc, char *argv[]) {
                     printf(RED"结果为：%X\n"NONE, finalanswer);
                     }
 
-                    if (option_t == 1) {
+                    if (option_t == 1 && h != ERROR) {
                         fprintf(output, "结果为：%X\n", finalanswer);
                         fflush(output);
+                    } else if(option_t == 1 && h == ERROR) {
+                        fprintf(output, "错误的表达式\n");
+                        fflush(output);
                     }
+                } else if(i != OK){
+                    fprintf(output, "错误的表达式\n");
+                    fflush(output);
                 }
                     
             }
@@ -125,11 +137,17 @@ int main(int argc, char *argv[]) {
                     printf(RED"结果为：%d\n"NONE, finalanswer);
                     }
 
-                    if (option_t == 1) {
+                    if (option_t == 1 && h != ERROR) {
                         fprintf(output, "结果为：%d\n", finalanswer);
                         fflush(output);
+                    } else if(option_t == 1 && h == ERROR) {
+                        fprintf(output, "错误的表达式\n");
+                        fflush(output);
                     }
-                }     
+                } else if(i != OK){
+                    fprintf(output, "错误的表达式\n");
+                    fflush(output);
+                }   
             }
         }
     }
