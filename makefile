@@ -1,10 +1,10 @@
 LDLIBS = -lreadline
 CFLAGS += -I/usr/include/readline
 
-myprogram: main3.o stack.o stack2.o binary.o hex.o
-	cc -o myprogram main3.o stack.o stack2.o binary.o hex.o $(LDLIBS)
+myprogram: main3.o stack.o stack2.o binary.o hex.o decimal.o
+	cc -o myprogram main3.o stack.o stack2.o binary.o hex.o  decimal.o $(LDLIBS)
 
-main3.o: main3.c stack.h stack.c stack2.c binary.o hex.o
+main3.o: main3.c stack.h stack.c stack2.c binary.o hex.o decimal.o
 	cc -c main3.c $(CFLAGS)
 
 stack.o: stack.c stack.h
@@ -18,5 +18,9 @@ binary.o: stack.c stack.h binary.c
 
 hex.o: stack.c stack.h hex.c 
 	cc -c hex.c $(CFLAGS)
+
+decimal.o: stack.c stack.h decimal.c 
+	cc -c decimal.c $(CFLAGS)
+
 clean:
-	rm -f myprogram main3.o stack.o stack2.o binary.o hex.c
+	rm -f myprogram main3.o stack.o stack2.o binary.o hex.c decimal.c
