@@ -54,8 +54,6 @@ int hex_change(char* expression, char* result){
                 result[j++] = ' ';
             } else if(expression[i + 1] == ')'){
                 printf("未知的表达式\n");
-                stack_clear(&stack);
-                stack_free(&stack);
                 return ERROR;
             }
         } else if (c == ')') {
@@ -87,8 +85,6 @@ int hex_change(char* expression, char* result){
 
         } else {
             printf("未知的表达式\n");
-            stack_clear(&stack);
-            stack_free(&stack);
             return ERROR;
         }
         
@@ -147,17 +143,13 @@ Status hex_calculate(char *result, double* finalResult) {
                 case '/':
                     if(b == 0){
                         printf("错误\n");
-                        clear(&stack);
-                        myfree(&stack);
                         return ERROR;
                     }
                     answer = a / b;
                     break;
                 default:
                 printf("错误\n");
-                clear(&stack);
-                myfree(&stack);
-                return OK;
+                return ERROR;
             }
             push(&stack, &answer);
         } 
