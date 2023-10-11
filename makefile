@@ -23,4 +23,4 @@ decimal.o: stack.c stack.h decimal.c
 	cc -c decimal.c $(CFLAGS)
 
 clean:
-	rm -f myprogram main3.o stack.o stack2.o binary.o hex.c decimal.c
+	rm -f myprogram main3.o stack.o stack2.o binary.o hex.o decimal.o

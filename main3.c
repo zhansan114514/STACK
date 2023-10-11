@@ -12,6 +12,7 @@
 #define RED "\033[0;32;31m"
 #define NONE "\033[m"
 #define YELLOW "\033[1;33m"
+
 //#define DEBUG_MODE 0
 
 int main(int argc, char *argv[]) {
@@ -44,14 +45,29 @@ int main(int argc, char *argv[]) {
         add_history(input);
         char result[100];
         double answer;
-        Status h;
 
         if (strcmp(input, "help") == 0) {
             printf(YELLOW"+代表将两数相加\n"NONE);
             printf(YELLOW"-代表将两数相减\n"NONE);
             printf(YELLOW"*代表将两数相乘\n"NONE);
             printf(YELLOW"/代表将两数相除\n"NONE);
-            printf("括号代表优先计算括号里面的内容\n");
+            printf(YELLOW"==代表将两数进行比较,两者相等输出1,两者不相等输出0\n"NONE);
+            printf(YELLOW"!=代表将两数进行比较,两者不相等输出1,两者相等输出0\n"NONE);
+            printf(YELLOW">=代表将两数进行比较,前者比后者大或两者相等输出1,否则输出0\n"NONE);
+            printf(YELLOW"<=代表将两数进行比较,前者比后者小或两者相等输出1,否则输出0\n"NONE);
+            printf(YELLOW">代表将两数进行比较,前者比后者大,否则输出0\n"NONE);
+            printf(YELLOW"<代表将两数进行比较,前者比后者小,否则输出0\n"NONE);
+            printf(YELLOW"&&代表将两表达式的结果进行比较,两者都成立输出1,否则输出0\n"NONE);
+            printf(YELLOW"||代表将两数进行比较,两者至少有一个成立输出1,否则输出0\n"NONE);
+            printf(YELLOW"括号代表优先计算括号里面的内容\n"NONE);
+            printf(YELLOW"输入B以切换二进制模式,进行二进制计算\n"NONE);
+            printf(YELLOW"输入H以切换十六进制模式,进行十六进制计算\n"NONE);
+            printf(YELLOW"二进制和十六进制模式支持无符号整型的+ - * / ()运算\n"NONE);
+            printf(YELLOW"二进制模式支持按位运算& | ^\n"NONE);
+            printf(YELLOW"&将两个数字的每个位进行比较,只有当两个相应位都为1时,结果位才为1,否则为0\n"NONE);
+            printf(YELLOW"|也是对两个数字的每个位进行比较,只要两个相应位中的任何一个位为1,结果位就为1\n"NONE);
+            printf(YELLOW"^也是对两个数字的每个位进行比较,但只有当两个相应位不相同时,结果位才为1,否则为0\n"NONE);
+            printf(YELLOW"该程序支持命令行参数“-t”将输出结果导入某一目标文件中\n"NONE);
         } else if(strcmp(input, "D") == 0) {
             printf("计算器切换到十进制\n");
             mode = decimal;
@@ -62,8 +78,8 @@ int main(int argc, char *argv[]) {
             printf("计算器切换到十六进制\n");
             mode = hex;
         } else if (mode == decimal){
-            if (input[0] != '\0') {
-                int i = decimal_change(input, result);
+            if (input[0] != '\0' && input[0] !='\n') {
+                Status i = decimal_change(input, result);
                 if (i == OK) {
 
                     #ifdef DEBUG_MODE
@@ -71,27 +87,36 @@ int main(int argc, char *argv[]) {
                         
                     #endif
                     
-                    h = decimal_calculate(result, &answer);
+                    Status h = decimal_calculate(result, &answer);
+                    printf("%g\n", answer);
                     free(input);
-                    if(h != ERROR){
+                    if(h == OK){
                     printf(RED"结果为：%g\n"NONE, answer);
                     }
 
-                    if (option_t == 1 && h != ERROR) {
+                    if (option_t == 1 && h == OK) {
                         fprintf(output, "结果为：%g\n", answer);
                         fflush(output);
                     } else if(option_t == 1 && h == ERROR) {
                         fprintf(output, "错误的表达式\n");
                         fflush(output);
                     }
-                } else if(i != OK){
-                    fprintf(output, "错误的表达式\n");
-                    fflush(output);
+                } else if(i == ERROR){
+                    if(option_t == 1){
+                        fprintf(output, "错误的表达式\n");
+                        fflush(output);
+                    }
                 }
+            } else {
+                printf("错误的表达式\n");
+                if(option_t == 1) {
+                        fprintf(output, "错误的表达式\n");
+                        fflush(output);
+                    }
             }
         } else if (mode == hex){
-            if (input[0] != '\0') {
-                int i = hex_change(input, result);
+            if (input[0] != '\0' && input[0] !='\n') {
+                Status i = hex_change(input, result);
                 if (i == OK) {
 
                     #ifdef DEBUG_MODE
@@ -99,30 +124,38 @@ int main(int argc, char *argv[]) {
                         
                     #endif
                     
-                    h = hex_calculate(result, &answer);
+                    Status h = hex_calculate(result, &answer);
                     unsigned int finalanswer = (unsigned int)answer;
                     free(input);
-                    if(h != ERROR){
+                    if(h == OK){
                     printf(RED"结果为：%X\n"NONE, finalanswer);
                     }
 
-                    if (option_t == 1 && h != ERROR) {
+                    if (option_t == 1 && h == OK) {
                         fprintf(output, "结果为：%X\n", finalanswer);
                         fflush(output);
                     } else if(option_t == 1 && h == ERROR) {
                         fprintf(output, "错误的表达式\n");
                         fflush(output);
                     }
-                } else if(i != OK){
-                    fprintf(output, "错误的表达式\n");
-                    fflush(output);
+                } else if(i == ERROR){
+                    if(option_t == 1){
+                        fprintf(output, "错误的表达式\n");
+                        fflush(output);
+                    }
                 }
                     
+            } else {
+                printf("错误的表达式\n");
+                if(option_t == 1) {
+                        fprintf(output, "错误的表达式\n");
+                        fflush(output);
+                    }
             }
         } else if (mode == binary){
             int finalanswer;
-            if (input[0] != '\0') {
-                int i = binary_change(input, result);
+            if (input[0] != '\0' && input[0] !='\n') {
+                Status i = binary_change(input, result);
                 if (i == OK) {
 
                     #ifdef DEBUG_MODE
@@ -130,24 +163,32 @@ int main(int argc, char *argv[]) {
                         
                     #endif
                     
-                    h = binary_calculate(result, &answer);
+                     Status h = binary_calculate(result, &answer);
                     finalanswer = binary_transform(answer);
                     free(input);
-                    if(h != ERROR){
+                    if(h == OK){
                     printf(RED"结果为：%d\n"NONE, finalanswer);
                     }
 
-                    if (option_t == 1 && h != ERROR) {
+                    if (option_t == 1 && h == OK) {
                         fprintf(output, "结果为：%d\n", finalanswer);
                         fflush(output);
                     } else if(option_t == 1 && h == ERROR) {
                         fprintf(output, "错误的表达式\n");
                         fflush(output);
                     }
-                } else if(i != OK){
-                    fprintf(output, "错误的表达式\n");
-                    fflush(output);
+                } else if(i == ERROR){
+                    if(option_t == 1){
+                        fprintf(output, "错误的表达式\n");
+                        fflush(output);
+                    }
                 }   
+            } else {
+                printf("错误的表达式\n");
+                if(option_t == 1) {
+                        fprintf(output, "错误的表达式\n");
+                        fflush(output);
+                    }
             }
         }
     }
