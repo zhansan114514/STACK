@@ -13,7 +13,7 @@
 #define NONE "\033[m"
 #define YELLOW "\033[1;33m"
 
-//#define DEBUG_MODE 0
+#define DEBUG_MODE 0
 
 int main(int argc, char *argv[]) {
     int opt;
@@ -60,6 +60,7 @@ int main(int argc, char *argv[]) {
             printf(YELLOW"&&代表将两表达式的结果进行比较,两者都成立输出1,否则输出0\n"NONE);
             printf(YELLOW"||代表将两数进行比较,两者至少有一个成立输出1,否则输出0\n"NONE);
             printf(YELLOW"括号代表优先计算括号里面的内容\n"NONE);
+            printf(YELLOW"当需要使用负数的时候，需要将负数包含在括号内进行规范表示\n"NONE);
             printf(YELLOW"输入B以切换二进制模式,进行二进制计算\n"NONE);
             printf(YELLOW"输入H以切换十六进制模式,进行十六进制计算\n"NONE);
             printf(YELLOW"二进制和十六进制模式支持无符号整型的+ - * / ()运算\n"NONE);
@@ -88,9 +89,7 @@ int main(int argc, char *argv[]) {
                     #endif
                     
                     Status h = decimal_calculate(result, &answer);
-                    printf("%g\n", answer);
-                    free(input);
-                    if(h == OK){
+                    if (h == OK){
                     printf(RED"结果为：%g\n"NONE, answer);
                     }
 
@@ -114,6 +113,7 @@ int main(int argc, char *argv[]) {
                         fflush(output);
                     }
             }
+            free(input);
         } else if (mode == hex){
             if (input[0] != '\0' && input[0] !='\n') {
                 Status i = hex_change(input, result);
@@ -126,7 +126,6 @@ int main(int argc, char *argv[]) {
                     
                     Status h = hex_calculate(result, &answer);
                     unsigned int finalanswer = (unsigned int)answer;
-                    free(input);
                     if(h == OK){
                     printf(RED"结果为：%X\n"NONE, finalanswer);
                     }
@@ -152,6 +151,7 @@ int main(int argc, char *argv[]) {
                         fflush(output);
                     }
             }
+            free(input);
         } else if (mode == binary){
             int finalanswer;
             if (input[0] != '\0' && input[0] !='\n') {
@@ -190,6 +190,7 @@ int main(int argc, char *argv[]) {
                         fflush(output);
                     }
             }
+            free(input);
         }
     }
     if (option_t == 1) {

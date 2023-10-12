@@ -46,8 +46,8 @@ Status decimal_change(const char* expression, char* result){
                 stack_pop(&stack,&k);
         } else if (c == '+' || c == '-' || c == '*' || c == '/') {
             if (c == '-' && i == 0  ){
-                result[j++] = '0';
-                result[j++] = ' ';
+                printf("错误\n");
+                return ERROR;
             }
             while (!is_empty(&stack) &&  decimal_precedence(c) <= decimal_precedence(*(stack.pTop - 1))) {
                 char element;
@@ -65,7 +65,7 @@ Status decimal_change(const char* expression, char* result){
         } else if(expression[i] == '\n'){
             break;
 
-        } else if(c == '!' || c == '=' || c == '>' || c == '&' || c == '<' || c == '|'){
+        } else if(c == '!' || c == '=' || c == '>' || c == '&' || c == '<' || c == '|' ){
             while (!is_empty(&stack) &&  decimal_precedence(c) <= decimal_precedence(*(stack.pTop - 1))) {
                 char element;
                 stack_pop(&stack, &element);
